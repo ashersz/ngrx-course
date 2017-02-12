@@ -3,7 +3,10 @@
 
 import {UiState, INITIAL_UI_STATE} from "../ui-state";
 import {Action} from "@ngrx/store";
-import {THREAD_SELECTED_ACTION, SELECT_USER_ACTION, SelectUserAction} from "../actions";
+import {
+    THREAD_SELECTED_ACTION, SELECT_USER_ACTION, SelectUserAction, ERROR_OCCURRED_ACTION,
+    ErrorOccurredAction
+} from "../actions";
 
 
 export function uiState(state: UiState = INITIAL_UI_STATE, action: Action) : UiState {
@@ -14,7 +17,7 @@ export function uiState(state: UiState = INITIAL_UI_STATE, action: Action) : UiS
 
             const newState = Object.assign({}, state);
 
-            newState.currentThreadId = action.payload;
+            newState.currentThreadId = action.payload.selectedThreadId;
 
             return newState;
 
@@ -23,12 +26,18 @@ export function uiState(state: UiState = INITIAL_UI_STATE, action: Action) : UiS
 
             return handleSelectUserAction(state, action);
 
+        case ERROR_OCCURRED_ACTION:
+
+            return handleErrorOccurredAction(state, action);
+
 
         default:
             return state;
+
     }
 
 }
+
 
 function handleSelectUserAction(state: UiState, action: SelectUserAction) {
 
@@ -40,6 +49,20 @@ function handleSelectUserAction(state: UiState, action: SelectUserAction) {
     return newUiState;
 
 }
+
+
+function handleErrorOccurredAction(state: UiState, action: ErrorOccurredAction) {
+
+    const newUiState = Object.assign({}, state);
+
+    newUiState.currentError = action.payload;
+
+    return newUiState;
+}
+
+
+
+
 
 
 
